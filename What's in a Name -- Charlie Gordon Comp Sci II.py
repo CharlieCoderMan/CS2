@@ -1,5 +1,12 @@
 import random
 def lower(name):
+    '''
+    turns each character into a lowercase letter if it is not already
+    args:
+        name(str)
+    output:
+        name fully lowercase (str)
+    '''
     name_list = list(name)
     new_name_list = []
     for letter in name_list:
@@ -15,6 +22,13 @@ def lower(name):
     
 
 def upper(name):
+    '''
+    turns each character into a uppercase letter if it is not already
+    args:
+        name(str)
+    output:
+        name fully uppercase (str)
+    '''
     name_list = list(name)
     new_name_list = []
     for letter in name_list:
@@ -33,6 +47,15 @@ def upper(name):
 
 
 def vowel_count(lower_or_upper_name):
+    '''
+    Counts the amount of vowels in your name and returns this
+
+    Args:
+    name(str)
+
+    Returns:
+    The amount of vowels in the name(str)
+    '''
     name = lower(lower_or_upper_name)
     name_list = list(name)
     vowels = ["a", "e", "i", "o", "u"]
@@ -44,6 +67,15 @@ def vowel_count(lower_or_upper_name):
     print(f'There are {vowels_in_name} vowels in this name')
 
 def constanant_count(lower_or_upper_name):
+    '''
+    Counts the amount of constanants in your name and returns this
+
+    Args:
+    name(str)
+
+    Returns:
+    The amount of constanants in the name(str)
+    '''
     name = lower(lower_or_upper_name)
     name_list = list(name)
     vowels = ["a", "e", "i", "o", "u"]
@@ -55,6 +87,16 @@ def constanant_count(lower_or_upper_name):
     print(f'There are {constanant_in_name} constanants in this name')
 
 def first_name(name):
+    '''
+    Detects where the first space in the name is and returns everything before that
+
+    Args:
+    name(str)
+
+    Returns:
+    The first name(str)
+    Theres only one name so can't run function
+    '''
     name_list = list(name)
     counter = 0
     if " " in name_list:
@@ -70,9 +112,27 @@ def first_name(name):
         return("Theres only 1 word in name so unable to run this function")
 
 def reverse(name):
+    '''
+    Runs the name in reverse
+
+    Args:
+    name(str)
+
+    Returns:
+    Reversed name(str)
+    '''
     return name[::-1]
 
 def hyphen_check(name):
+    '''
+    Detects if a hyphen is in the name 
+
+    Args:
+    name(str)
+
+    Returns:
+    True of False (Boolean)
+    '''
     for letter in name:
         if "-" in name:
             return True
@@ -80,6 +140,16 @@ def hyphen_check(name):
         else:
             return False
 def last_name(name):
+    '''
+    Detects where the last space in the name is and returns everything before that
+
+    Args:
+    name(str)
+
+    Returns:
+    The last name(str)
+    only one name so unable to run function(str)
+    '''
     name_list = list(name)
     if " " in name_list:
         backwards_name = reverse(name)
@@ -91,42 +161,53 @@ def last_name(name):
 
 
 def middle_name(name):
+    '''
+    Detects where the first space and last pace in the name is and removes everything in between them
+
+    Args:
+    name(str)
+
+    Returns:
+    The middle name(s) (str)
+    There is not middle names
+    '''
     name_list = list(name)
     space_counter = 0
     for letter in name:
         if letter == " ":
             space_counter += 1
     if space_counter > 1:
-        for i in name:
-            if i == " ":
-                name_list.remove(i)
+        begin = 0
+        for index in range(len(name)):
+            if name[index] == " ":
+                begin += 1
                 break
             else:
-                name_list.remove(i)
-        first_name_removed = "".join(name_list)
-        fnr_reversed = reverse(first_name_removed)
-        fnr_reversed_list = list(fnr_reversed)
-        for letter in fnr_reversed_list:
-            if letter == " ":
-                fnr_reversed_list.remove(letter)
+                begin += 1
+        end = len(name)
+        for ind in range(len(name) -1):
+            if name[ind] == " ":
                 break
             else:
-                fnr_reversed_list.remove(letter)
-        fnrlnr_reversed = "".join(fnr_reversed_list)
-        fnrlnr = reverse(fnrlnr_reversed)
-        return fnrlnr
-        
-        
+                end -= 1
+        middle_names = name_list[begin: end]
+        return "".join(middle_names)
+            
+
         
 
-
-
-    else:
-        print('There is no middle name')
 
 
 def titles(name):
-    titles = ["Dr."]
+    '''
+    Detects if a special title is in the name
+    Args:
+    name(str)
+
+    Returns:
+    True or False (boolean)
+    '''
+    titles = ["Dr.", "Sir", "Mr.", "Ms", "Mrs.", "Esq."]
     first_part_of_name = first_name(name)
     if first_part_of_name in titles:
         return True
@@ -136,7 +217,65 @@ def titles(name):
 
 
 def shuffle(name):
-    pass
+    '''
+    Takes a random letter from the name and puts it in a new str
+
+    Args:
+    name(str)
+
+    Returns:
+    Suffled_name(str)
+    '''
+    name_list = list(name)
+    shuffled_list = []
+    while len(name_list) > 0:
+        random_letter = random.randint(0, (len(name_list)-1))
+        selected_letter = name_list[random_letter]
+        shuffled_list.append(selected_letter)
+        name_list.remove(selected_letter) 
+                
+    return "".join(shuffled_list)
+
+
+
+def sorted_array(name):
+    sorted_array_list = []
+    ascii_list = []
+    lower_letter = lower(name)
+    for i in lower_letter:
+        let_to_num = ord(i)
+        ascii_list.append(let_to_num)
+    ascii_list.sort()
+    for numbers in ascii_list:
+        letters = chr(numbers)
+        sorted_array_list.append(letters)
+    return("".join(sorted_array_list))
+        
+        
+        
+
+def initials(name):
+    ''' 
+    Takes the first letter of every word and puts a period between it
+
+    Args:
+    name(str)
+
+    Returns:
+    Initals with period between them(str)
+    
+    '''
+    name_list = list(name)
+    initals_list = []
+    counter=0
+    for letter in name_list:
+        if counter == 0:
+            initals_list.append(letter)
+            counter += 1
+        if letter == " ":
+            counter = 0
+    return(".".join(initals_list))
+        
         
  
 
@@ -153,7 +292,9 @@ def shuffle(name):
 
 def main():
     while True:
+        #Asks for the name, will be put through all functions
         users_name = input("What's your name?")
+        #Where user sees all possible options for what to do with name input
         menu = input(
     """
                                     MENU
@@ -168,12 +309,23 @@ def main():
     9. Make all characters in name capitilized
     10. Test if it is a palindrome
     11. Shuffle name
+    12. Check if theres a special title
+    13. Print initals
+    14. Place letters in alphabetic order
+    15. Quit
     """       
         )
         if menu == "1":
             vowel_count(users_name)
         elif menu =="2":
-            print(first_name(users_name))
+            #If there is not a special title
+            if titles(users_name) == False:
+                print(first_name(users_name))
+            else:
+                #Remove the title and run the function
+                without_title = users_name.replace(first_name(users_name), "")
+                without_title_and_space = without_title.replace(" ", "", 1)
+                print(first_name(without_title_and_space))
         elif menu == "3":
             print(last_name(users_name))
         elif menu == "4":
@@ -188,16 +340,33 @@ def main():
         elif menu == "7":
             print(lower(users_name))
         elif menu == "8":
-            print(middle_name(users_name))
+            if titles(users_name) == False:
+                print(middle_name(users_name))
+            else:
+                without_title = users_name.replace(first_name(users_name), "")
+                without_title_and_space = without_title.replace(" ", "", 1)
+                print(middle_name(without_title_and_space))
         elif menu == "9":
             print(upper(users_name))
         elif menu == "10":
+            #If the name is the same as it is when reversed
             if users_name == reverse(users_name):
                 print('it is a palindrome')
             else:
                 print('it is not a palindrome')
         elif menu == "11":
             print(shuffle(users_name))
+        elif menu == "12":
+            if titles(users_name) == True:
+                print('There is a special title')
+            else:
+                print('There is not a special title')
+        elif menu == "13":
+            print(initials(users_name))
+        elif menu == "14":
+            print(sorted_array(users_name))
+        elif menu == "15":
+            break
         
         else:
             print('not an option(type number(1, 2, etc)')
