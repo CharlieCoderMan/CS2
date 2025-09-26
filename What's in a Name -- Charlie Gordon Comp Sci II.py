@@ -1,3 +1,11 @@
+'''
+Author: Charlie Gordon
+Sources: Mr. Campbell, Google, Ascii Keys symbol
+Bugs:
+Date:9.30.25
+'''
+
+
 import random
 def lower(name):
     '''
@@ -239,6 +247,16 @@ def shuffle(name):
 
 
 def sorted_array(name):
+    '''
+    Puts the ltter in your name in alphabetical order by using ascii keys 
+
+    args:
+    name(str)
+
+    returns:
+    name in alphabetical order(str)
+    
+    '''
     sorted_array_list = []
     ascii_list = []
     lower_letter = lower(name)
@@ -275,6 +293,35 @@ def initials(name):
         if letter == " ":
             counter = 0
     return(".".join(initals_list))
+
+def cipher(name):
+    '''
+    Makes each letter in the name jump 3 spots to ciper the name
+
+    Args:
+    name(str)
+
+    Returns:
+    ciphered name(str)
+    
+    '''
+    lower_name = lower(name)
+    new_name_list = []
+    for letter in lower_name:
+        num_letter = ord(letter)
+        if num_letter == 120:
+            num_letter = 97
+        elif num_letter == 121:
+            num_letter = 98
+        elif num_letter == 122:
+            num_letter = 99
+        else:
+            num_letter += 3
+        letter_num = chr(num_letter)
+        new_name_list.append(letter_num)
+    return "".join(new_name_list)
+
+        
         
         
  
@@ -294,82 +341,90 @@ def main():
     while True:
         #Asks for the name, will be put through all functions
         users_name = input("What's your name?")
-        #Where user sees all possible options for what to do with name input
-        menu = input(
-    """
-                                    MENU
-    1. Detect how many vowels are in the name
-    2. Which part of the name is the first name
-    3. Which part of the name is the last name
-    4. Reverse name
-    5. Detect how many constanants are in the name
-    6. Detect if there is a hyphen in the name
-    7. Make all characters in name lower
-    8. Which part of the name is the middle name
-    9. Make all characters in name capitilized
-    10. Test if it is a palindrome
-    11. Shuffle name
-    12. Check if theres a special title
-    13. Print initals
-    14. Place letters in alphabetic order
-    15. Quit
-    """       
-        )
-        if menu == "1":
-            vowel_count(users_name)
-        elif menu =="2":
-            #If there is not a special title
-            if titles(users_name) == False:
-                print(first_name(users_name))
+        if users_name == str:
+                
+            #Where user sees all possible options for what to do with name input
+            menu = input(
+        """
+                                        MENU
+        1. Detect how many vowels are in the name
+        2. Which part of the name is the first name
+        3. Which part of the name is the last name
+        4. Reverse name
+        5. Detect how many constanants are in the name
+        6. Detect if there is a hyphen in the name
+        7. Make all characters in name lower
+        8. Which part of the name is the middle name
+        9. Make all characters in name capitilized
+        10. Test if it is a palindrome
+        11. Shuffle name
+        12. Check if theres a special title
+        13. Print initals
+        14. Place letters in alphabetic order
+        15. Turn your name into a cipher.
+        16. Quit
+        """       
+            )
+            if menu == "1":
+                vowel_count(users_name)
+            elif menu =="2":
+                #If there is not a special title
+                if titles(users_name) == False:
+                    print(first_name(users_name))
+                else:
+                    #Remove the title and run the function
+                    without_title = users_name.replace(first_name(users_name), "")
+                    without_title_and_space = without_title.replace(" ", "", 1)
+                    print(first_name(without_title_and_space))
+            elif menu == "3":
+                print(last_name(users_name))
+            elif menu == "4":
+                print(reverse(users_name))
+            elif menu == "5":
+                constanant_count(users_name)
+            elif menu == "6":
+                if hyphen_check(users_name) == True:
+                    print('there is a hyphen in the name')
+                else:
+                    print('there is not a hyphen in the name')
+            elif menu == "7":
+                print(lower(users_name))
+            elif menu == "8":
+                if titles(users_name) == False:
+                    print(middle_name(users_name))
+                else:
+                    without_title = users_name.replace(first_name(users_name), "")
+                    without_title_and_space = without_title.replace(" ", "", 1)
+                    print(middle_name(without_title_and_space))
+            elif menu == "9":
+                print(upper(users_name))
+            elif menu == "10":
+                #If the name is the same as it is when reversed
+                if users_name == reverse(users_name):
+                    print('it is a palindrome')
+                else:
+                    print('it is not a palindrome')
+            elif menu == "11":
+                print(shuffle(users_name))
+            elif menu == "12":
+                #If the function has said there is a hyphen
+                if titles(users_name) == True:
+                    print('There is a special title')
+                else:
+                    print('There is not a special title')
+            elif menu == "13":
+                print(initials(users_name))
+            elif menu == "14":
+                print(sorted_array(users_name))
+            elif menu == "15":
+                print(cipher(users_name))
+            elif menu == "16":
+                break
+            
             else:
-                #Remove the title and run the function
-                without_title = users_name.replace(first_name(users_name), "")
-                without_title_and_space = without_title.replace(" ", "", 1)
-                print(first_name(without_title_and_space))
-        elif menu == "3":
-            print(last_name(users_name))
-        elif menu == "4":
-            print(reverse(users_name))
-        elif menu == "5":
-            constanant_count(users_name)
-        elif menu == "6":
-            if hyphen_check(users_name) == True:
-                print('there is a hyphen in the name')
-            else:
-                print('there is not a hyphen in the name')
-        elif menu == "7":
-            print(lower(users_name))
-        elif menu == "8":
-            if titles(users_name) == False:
-                print(middle_name(users_name))
-            else:
-                without_title = users_name.replace(first_name(users_name), "")
-                without_title_and_space = without_title.replace(" ", "", 1)
-                print(middle_name(without_title_and_space))
-        elif menu == "9":
-            print(upper(users_name))
-        elif menu == "10":
-            #If the name is the same as it is when reversed
-            if users_name == reverse(users_name):
-                print('it is a palindrome')
-            else:
-                print('it is not a palindrome')
-        elif menu == "11":
-            print(shuffle(users_name))
-        elif menu == "12":
-            if titles(users_name) == True:
-                print('There is a special title')
-            else:
-                print('There is not a special title')
-        elif menu == "13":
-            print(initials(users_name))
-        elif menu == "14":
-            print(sorted_array(users_name))
-        elif menu == "15":
-            break
-        
-        else:
-            print('not an option(type number(1, 2, etc)')
+                print('not an option(type number(1, 2, etc)')
 
+        else:
+            print('cant have numbers in name')
 main()
 
