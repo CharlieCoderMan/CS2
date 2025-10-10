@@ -1,0 +1,111 @@
+def getzip(your_loc, their_loc):
+    zip_dif = 0
+    if their_loc - your_loc > 0:
+        distance = their_loc - your_loc
+    else:
+        distance = your_loc - their_loc
+
+    if distance == 0:
+        zip_dif = 0
+        return zip_dif
+    if distance >= 1 and distance <= 6999:
+        zip_dif = 1
+        return zip_dif
+    elif distance >= 7000 and distance <= 19999:
+        zip_dif = 2
+        return zip_dif
+    elif distance >= 20000 and distance <= 35999:
+        zip_dif = 3
+        return zip_dif
+    elif distance >= 36000 and distance <= 62999:
+        zip_dif = 4
+        return zip_dif
+    elif distance >= 63000 and distance <= 84999:
+        zip_dif = 5
+        return zip_dif
+    elif distance >= 85000 and distance <= 99999:
+        zip_dif = 6
+        return zip_dif
+    else:
+        return False
+    
+    
+    
+
+
+
+    
+    
+    return distance
+def getsize(length, width, height):
+    #1 is regular postcard
+    #2 is large postcard
+    #3 is envelope
+    #4 is large envelope
+    #5 is package
+    #6 is large package
+
+    package_calc = length + (width*2) + (height*2)
+
+    if length >= 3.5 and length <= 4.25 and width >= .007 and width <= .016 and height >= 3.5 and height <= 6:
+        return 1
+    elif length >= 4.25 and length <= 6 and width >= .007 and width <= .015 and height >= 6 and height <= 11.5:
+        return 2
+    elif length >= 3.5 and length <= 6.125 and width >= .016 and width <= .25 and height >= 5 and height <= 11.5:
+        return 3
+    elif length >= 6.125 and length <= 24 and width >= .25 and width <= .5 and height >= 11 and height <= 18:
+        return 4
+    elif package_calc <= 84:
+        return 5
+    elif package_calc >= 84 and package_calc <= 130:
+        return 6
+    else:
+        return False
+
+def main():
+    zone_price = 0
+    card_price = 0
+    print('Hello! welcome to my Post Office')
+    #Add value errors later
+    all_values = input('''Type in this order with spaces between properties:
+    Length of your item
+    Height of your item
+    Width of your item
+    Your zip code
+    Zip code of the place your going
+''')
+    values_spit = all_values.split(',')
+    
+    length = float(values_spit[0])
+    height = float(values_spit[1])
+    width = float(values_spit[2])
+    your_loc = int(values_spit[3])
+    their_loc = int(values_spit[4])
+
+    if getsize(length, width, height) == False or getzip(your_loc, their_loc) == False:
+        print('Invalid input')
+    else:
+        if getsize(length, width, height) == 1:
+            zone_price = .03
+            card_price = .20
+        elif getsize(length, width, height) == 2:
+            zone_price = .03
+            card_price = .37
+        elif getsize(length, width, height) == 3:
+            zone_price = .04
+            card_price = .37
+        elif getsize(length, width, height) == 4:
+            zone_price = .05
+            card_price = .60
+        elif getsize(length, width, height) == 5:
+            zone_price = .25
+            card_price = 2.95
+        elif getsize(length, width, height) == 6:
+            zone_price = .35
+            card_price = 3.95
+        
+        print(card_price + (zone_price*getzip(your_loc, their_loc)))
+
+main()
+
+    
