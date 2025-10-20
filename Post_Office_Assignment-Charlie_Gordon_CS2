@@ -1,43 +1,54 @@
-def getzip(your_loc, their_loc):
-    zip_dif = 0
-    if their_loc - your_loc > 0:
-        distance = their_loc - your_loc
-    else:
-        distance = your_loc - their_loc
+"""
+Author: Charlie Gordon
+Sources, Mr. Campbell, Assignment Sheet
+Description: Returns the price it takes to ship item at the post office based on the classifcations the user gives it
+Date: 10.31.25
+Bugs:
+Log: 1.0 C.G
+"""
 
-    if distance == 0:
-        zip_dif = 0
-        return zip_dif
+def getzip(distance):
+    '''
+    Args:
+    Distance(int)
+
+    Returns:
+    Zone (int)
+    False(boolean)
+
+    Summary:
+    Detects which zone a zip code is in why seeing which numbers it is in between
+    '''
     if distance >= 1 and distance <= 6999:
-        zip_dif = 1
-        return zip_dif
+        return 1
     elif distance >= 7000 and distance <= 19999:
-        zip_dif = 2
-        return zip_dif
+        return 2
     elif distance >= 20000 and distance <= 35999:
-        zip_dif = 3
-        return zip_dif
+        return 3
     elif distance >= 36000 and distance <= 62999:
-        zip_dif = 4
-        return zip_dif
+        return 4
     elif distance >= 63000 and distance <= 84999:
-        zip_dif = 5
-        return zip_dif
+        return 5
     elif distance >= 85000 and distance <= 99999:
-        zip_dif = 6
-        return zip_dif
+        return 6
     else:
         return False
-    
-    
-    
 
-
-
-    
-    
-    return distance
 def getsize(length, width, height):
+    '''
+    Args:
+    length(float)
+    width(float)
+    height(float)
+
+    Returns:
+    Card classification (int)
+    False(Boolean)
+
+    Summary:
+    Detects which classification an item has by using which lengths, widths, and heights, it needs to be between
+    '''
+    
     #1 is regular postcard
     #2 is large postcard
     #3 is envelope
@@ -63,48 +74,72 @@ def getsize(length, width, height):
         return False
 
 def main():
-    zone_price = 0
-    card_price = 0
-    print('Hello! welcome to my Post Office')
-    #Add value errors later
-    all_values = input('''Type in this order with spaces between properties:
-    Length of your item
-    Height of your item
-    Width of your item
-    Your zip code
-    Zip code of the place your going
-''')
-    values_spit = all_values.split(',')
-    
-    length = float(values_spit[0])
-    height = float(values_spit[1])
-    width = float(values_spit[2])
-    your_loc = int(values_spit[3])
-    their_loc = int(values_spit[4])
-
-    if getsize(length, width, height) == False or getzip(your_loc, their_loc) == False:
-        print('Invalid input')
-    else:
-        if getsize(length, width, height) == 1:
-            zone_price = .03
-            card_price = .20
-        elif getsize(length, width, height) == 2:
-            zone_price = .03
-            card_price = .37
-        elif getsize(length, width, height) == 3:
-            zone_price = .04
-            card_price = .37
-        elif getsize(length, width, height) == 4:
-            zone_price = .05
-            card_price = .60
-        elif getsize(length, width, height) == 5:
-            zone_price = .25
-            card_price = 2.95
-        elif getsize(length, width, height) == 6:
-            zone_price = .35
-            card_price = 3.95
+    counter = 0
+    #So all types of items can be tested
+    while counter < 6:
+        #Price per zone on this type of package
+        zone_price = 0
+        #Price of type of item
+        card_price = 0
+        print('Hello! welcome to my Post Office')
         
-        print(card_price + (zone_price*getzip(your_loc, their_loc)))
+        #Try to do this code
+        try:
+            all_values = input('''Type in this order with commas and spaces in between each of these properties::
+            Length of your item
+            Height of your item
+            Width of your item
+            Your zip code
+            Zip code of the place your going
+        ''')
+            #Split values when a , is placed
+            #Split into the different characteristics
+            values_spit = all_values.split(',')
+            
+            length = float(values_spit[0])
+            height = float(values_spit[1])
+            width = float(values_spit[2])
+            your_loc = int(values_spit[3])
+            their_loc = int(values_spit[4])
+        #If the return of this is a value error
+        except ValueError:
+            print('Invalid inputs')
+            continue
+
+        #if the functions decided this item in not mailable or there was a miss input
+        if getsize(length, width, height) == False or getzip(your_loc) == False or getzip(their_loc) == False:
+            print('Invalid item or location')
+        else:
+            #The difference in zipcodes is the absolute value of the two zip codes subtracted
+            zip_dif = abs(getzip(your_loc)-getzip(their_loc))
+            #If the item is a regular post card
+            if getsize(length, width, height) == 1:
+                zone_price = .03
+                card_price = .20
+            #If the item is a large post card
+            elif getsize(length, width, height) == 2:
+                zone_price = .03
+                card_price = .37
+            #If the item is an envelope
+            elif getsize(length, width, height) == 3:
+                zone_price = .04
+                card_price = .37
+            #If the item is a large envelope
+            elif getsize(length, width, height) == 4:
+                zone_price = .05
+                card_price = .60
+            #If the item is a package
+            elif getsize(length, width, height) == 5:
+                zone_price = .25
+                card_price = 2.95
+            #If the item is a large package
+            elif getsize(length, width, height) == 6:
+                zone_price = .35
+                card_price = 3.95
+            #Return the price of the card alone plus the price of zones needed to go times the price this items classification has for traveling zones
+            #Is total cost
+            print(card_price + (zone_price*zip_dif))
+        counter += 1
 
 main()
 
