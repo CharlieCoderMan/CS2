@@ -3,7 +3,7 @@ Author: Charlie Gordon
 Sources, Mr. Campbell, Assignment Sheet
 Description: Returns the price it takes to ship item at the post office based on the classifcations the user gives it
 Date: 10.31.25
-Bugs:
+Bugs: Doesn't work if you don't put in 5 numbers with commas in between for input
 Log: 1.0 C.G
 """
 
@@ -56,22 +56,66 @@ def getsize(length, width, height):
     #5 is package
     #6 is large package
 
-    package_calc = length + (width*2) + (height*2)
+    package_calc = length + (width*2) + (height*2)   
 
-    if length >= 3.5 and length <= 4.25 and width >= .007 and width <= .016 and height >= 3.5 and height <= 6:
+    if length >= 3.5 and length <= 4.25 and width >= .007 and width <= .016 and height >= 3.5 and height <= 6:          #If the properties of this item are those of a regular post card
         return 1
-    elif length >= 4.25 and length <= 6 and width >= .007 and width <= .015 and height >= 6 and height <= 11.5:
+    elif length >= 4.25 and length <= 6 and width >= .007 and width <= .015 and height >= 6 and height <= 11.5:         #If the properties of this item are those of a large post card
         return 2
-    elif length >= 3.5 and length <= 6.125 and width >= .016 and width <= .25 and height >= 5 and height <= 11.5:
+    elif length >= 3.5 and length <= 6.125 and width >= .016 and width <= .25 and height >= 5 and height <= 11.5:       #If the properties of this item are those of an envelope
         return 3
-    elif length >= 6.125 and length <= 24 and width >= .25 and width <= .5 and height >= 11 and height <= 18:
+    elif length >= 6.125 and length <= 24 and width >= .25 and width <= .5 and height >= 11 and height <= 18:           #If the properties of this item are those of a large envelope
         return 4
-    elif package_calc <= 84:
+    elif package_calc <= 84:                                                                                            #If the properties of this item are those of a package
         return 5
-    elif package_calc >= 84 and package_calc <= 130:
+    elif package_calc >= 84 and package_calc <= 130:                                                                    #If the properties of this item are those of a large package
         return 6
     else:
         return False
+    
+
+def cost_calc(length, width, height, your_loc, their_loc):
+    '''
+    Args:
+        length(Float)
+        width(Float)
+        height(Float)
+        your_loc(int)
+        their_loc(int)
+    Returns:
+        Price(float)
+    Summary:
+        Uses the package calaculation to decide how much money it costs to mail the package and the price it akes to travel the amount of zones calculated in getzip
+    '''
+    #The difference in zipcodes is the absolute value of the two zip codes subtracted
+    zip_dif = abs(getzip(your_loc)-getzip(their_loc))
+    #If the item is a regular post card
+    if getsize(length, width, height) == 1:
+        zone_price = .03
+        card_price = .20
+    #If the item is a large post card
+    elif getsize(length, width, height) == 2:
+        zone_price = .03
+        card_price = .37
+    #If the item is an envelope
+    elif getsize(length, width, height) == 3:
+        zone_price = .04
+        card_price = .37
+    #If the item is a large envelope
+    elif getsize(length, width, height) == 4:
+        zone_price = .05
+        card_price = .60
+    #If the item is a package
+    elif getsize(length, width, height) == 5:
+        zone_price = .25
+        card_price = 2.95
+    #If the item is a large package
+    elif getsize(length, width, height) == 6:
+        zone_price = .35
+        card_price = 3.95
+    #Return the price of the card alone plus the price of zones needed to go times the price this items classification has for traveling zones
+    #Is total cost
+    return(card_price + (zone_price*zip_dif))
 
 def main():
     counter = 0
@@ -91,16 +135,16 @@ def main():
             Width of your item
             Your zip code
             Zip code of the place your going
-        ''')
+''')
             #Split values when a , is placed
             #Split into the different characteristics
-            values_spit = all_values.split(',')
+            values_split = all_values.split(',')
             
-            length = float(values_spit[0])
-            height = float(values_spit[1])
-            width = float(values_spit[2])
-            your_loc = int(values_spit[3])
-            their_loc = int(values_spit[4])
+            length = float(values_split[0])
+            height = float(values_split[1])
+            width = float(values_split[2])
+            your_loc = int(values_split[3])
+            their_loc = int(values_split[4])
         #If the return of this is a value error
         except ValueError:
             print('Invalid inputs')
@@ -110,35 +154,7 @@ def main():
         if getsize(length, width, height) == False or getzip(your_loc) == False or getzip(their_loc) == False:
             print('Invalid item or location')
         else:
-            #The difference in zipcodes is the absolute value of the two zip codes subtracted
-            zip_dif = abs(getzip(your_loc)-getzip(their_loc))
-            #If the item is a regular post card
-            if getsize(length, width, height) == 1:
-                zone_price = .03
-                card_price = .20
-            #If the item is a large post card
-            elif getsize(length, width, height) == 2:
-                zone_price = .03
-                card_price = .37
-            #If the item is an envelope
-            elif getsize(length, width, height) == 3:
-                zone_price = .04
-                card_price = .37
-            #If the item is a large envelope
-            elif getsize(length, width, height) == 4:
-                zone_price = .05
-                card_price = .60
-            #If the item is a package
-            elif getsize(length, width, height) == 5:
-                zone_price = .25
-                card_price = 2.95
-            #If the item is a large package
-            elif getsize(length, width, height) == 6:
-                zone_price = .35
-                card_price = 3.95
-            #Return the price of the card alone plus the price of zones needed to go times the price this items classification has for traveling zones
-            #Is total cost
-            print(card_price + (zone_price*zip_dif))
+            print (f"{cost_calc(length, width, height, your_loc, their_loc):.2f}".lstrip("0"))
         counter += 1
 
 main()
