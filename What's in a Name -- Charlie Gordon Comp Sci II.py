@@ -1,162 +1,430 @@
-"""
+'''
 Author: Charlie Gordon
-Sources, Mr. Campbell, Assignment Sheet
-Description: Returns the price it takes to ship item at the post office based on the classifcations the user gives it
-Date: 10.31.25
-Bugs: Doesn't work if you don't put in 5 numbers with commas in between for input
+Sources: Mr. Campbell, Google, Ascii Keys symbol
+Bugs: palindrome is buggy, Middle name func shouldn't print first letter of last name, initals shouldn't have title included, Add display name, if special title is capitalized special title doesn't work, shouldn't detect number as consonant, doesn't detect space
+Date:9.30.25
+Description: A bunch of functions on how to mess around with the name the user types into the system
 Log: 1.0 C.G
-"""
+'''
 
-def getzip(distance):
+
+import random
+def lower(name):
     '''
+    turns each character into a lowercase letter if it is not already
+    args:
+        name(str)
+    output:
+        name fully lowercase (str)
+    '''
+    name_list = list(name)
+    new_name_list = []
+    for letter in name_list:
+        int_value = ord(letter)
+        if int_value < 90 and int_value > 64:
+            new_int_value = int_value+32
+            lower_letter = chr(new_int_value)
+            new_name_list.append(lower_letter)
+        else:
+            already_lower_letter = chr(int_value)
+            new_name_list.append(already_lower_letter)
+    return("".join(new_name_list))
+    
+
+def upper(name):
+    '''
+    turns each character into a uppercase letter if it is not already
+    args:
+        name(str)
+    output:
+        name fully uppercase (str)
+    '''
+    name_list = list(name)
+    new_name_list = []
+    for letter in name_list:
+        int_value = ord(letter)
+        if int_value > 96 and int_value < 122:
+            new_int_value = int_value-32
+            higher_letter = chr(new_int_value)
+            new_name_list.append(higher_letter)
+        else:
+            already_higher_letter = chr(int_value)
+            new_name_list.append(already_higher_letter)
+    return("".join(new_name_list))     
+            
+
+
+
+
+def vowel_count(lower_or_upper_name):
+    '''
+    Counts the amount of vowels in your name and returns this
+
     Args:
-    Distance(int)
+    name(str)
 
     Returns:
-    Zone (int)
-    False(boolean)
-
-    Summary:
-    Detects which zone a zip code is in why seeing which numbers it is in between
+    The amount of vowels in the name(str)
     '''
-    if distance >= 1 and distance <= 6999:
-        return 1
-    elif distance >= 7000 and distance <= 19999:
-        return 2
-    elif distance >= 20000 and distance <= 35999:
-        return 3
-    elif distance >= 36000 and distance <= 62999:
-        return 4
-    elif distance >= 63000 and distance <= 84999:
-        return 5
-    elif distance >= 85000 and distance <= 99999:
-        return 6
+    name = lower(lower_or_upper_name)
+    name_list = list(name)
+    vowels = ["a", "e", "i", "o", "u"]
+    vowels_in_name = 0
+
+    for letter in name_list:
+        if letter in vowels:
+            vowels_in_name += 1
+    print(f'There are {vowels_in_name} vowels in this name')
+
+def constanant_count(lower_or_upper_name):
+    '''
+    Counts the amount of constanants in your name and returns this
+
+    Args:
+    name(str)
+
+    Returns:
+    The amount of constanants in the name(str)
+    '''
+    name = lower(lower_or_upper_name)
+    name_list = list(name)
+    vowels = ["a", "e", "i", "o", "u"]
+    constanant_in_name = 0
+
+    for letter in name_list:
+        if letter not in vowels:
+            constanant_in_name += 1
+    print(f'There are {constanant_in_name} constanants in this name')
+
+def first_name(name):
+    '''
+    Detects where the first space in the name is and returns everything before that
+
+    Args:
+    name(str)
+
+    Returns:
+    The first name(str)
+    Theres only one name so can't run function
+    '''
+    name_list = list(name)
+    counter = 0
+    if " " in name_list:
+        for letter in name_list:
+            if letter == " ":
+                break
+            else:
+                counter = counter + 1
+        first_name_list = name_list[0:counter]
+        first_name_string = "".join(first_name_list)
+        return first_name_string
+    else:
+        return("Theres only 1 word in name so unable to run this function")
+
+def reverse(name):
+    '''
+    Runs the name in reverse
+
+    Args:
+    name(str)
+
+    Returns:
+    Reversed name(str)
+    '''
+    return name[::-1]
+
+def hyphen_check(name):
+    '''
+    Detects if a hyphen is in the name 
+
+    Args:
+    name(str)
+
+    Returns:
+    True of False (Boolean)
+    '''
+    for letter in name:
+        if "-" in name:
+            return True
+            break
+        else:
+            return False
+def last_name(name):
+    '''
+    Detects where the last space in the name is and returns everything before that
+
+    Args:
+    name(str)
+
+    Returns:
+    The last name(str)
+    only one name so unable to run function(str)
+    '''
+    name_list = list(name)
+    if " " in name_list:
+        backwards_name = reverse(name)
+        backwards_last_name = first_name(backwards_name)
+        last_name = reverse(backwards_last_name)
+        return last_name
+    else:
+        return("There's only 1 word in name so unable to run this function")
+
+
+def middle_name(name):
+    '''
+    Detects where the first space and last pace in the name is and removes everything in between them
+
+    Args:
+    name(str)
+
+    Returns:
+    The middle name(s) (str)
+    There is not middle names
+    '''
+    name_list = list(name)
+    space_counter = 0
+    for letter in name:
+        if letter == " ":
+            space_counter += 1
+    if space_counter > 1:
+        begin = 0
+        for index in range(len(name)):
+            if name[index] == " ":
+                begin += 1
+                break
+            else:
+                begin += 1
+        end = len(name)
+        for ind in range(len(name) -1):
+            if name[ind] == " ":
+                break
+            else:
+                end -= 1
+        middle_names = name_list[begin: end]
+        return "".join(middle_names)
+            
+
+        
+
+
+
+def titles(name):
+    '''
+    Detects if a special title is in the name
+    Args:
+    name(str)
+
+    Returns:
+    True or False (boolean)
+    '''
+    titles = ["Dr.", "Sir", "Mr.", "Ms", "Mrs.", "Esq."]
+    first_part_of_name = first_name(name)
+    if first_part_of_name in titles:
+        return True
     else:
         return False
 
-def getsize(length, width, height):
+
+
+def shuffle(name):
     '''
+    Takes a random letter from the name and puts it in a new str
+
     Args:
-    length(float)
-    width(float)
-    height(float)
+    name(str)
 
     Returns:
-    Card classification (int)
-    False(Boolean)
-
-    Summary:
-    Detects which classification an item has by using which lengths, widths, and heights, it needs to be between
+    Suffled_name(str)
     '''
-    
-    #1 is regular postcard
-    #2 is large postcard
-    #3 is envelope
-    #4 is large envelope
-    #5 is package
-    #6 is large package
+    name_list = list(name)
+    shuffled_list = []
+    while len(name_list) > 0:
+        random_letter = random.randint(0, (len(name_list)-1))
+        selected_letter = name_list[random_letter]
+        shuffled_list.append(selected_letter)
+        name_list.remove(selected_letter) 
+                
+    return "".join(shuffled_list)
 
-    package_calc = length + (width*2) + (height*2)   
 
-    if length >= 3.5 and length <= 4.25 and width >= .007 and width <= .016 and height >= 3.5 and height <= 6:          #If the properties of this item are those of a regular post card
-        return 1
-    elif length >= 4.25 and length <= 6 and width >= .007 and width <= .015 and height >= 6 and height <= 11.5:         #If the properties of this item are those of a large post card
-        return 2
-    elif length >= 3.5 and length <= 6.125 and width >= .016 and width <= .25 and height >= 5 and height <= 11.5:       #If the properties of this item are those of an envelope
-        return 3
-    elif length >= 6.125 and length <= 24 and width >= .25 and width <= .5 and height >= 11 and height <= 18:           #If the properties of this item are those of a large envelope
-        return 4
-    elif package_calc <= 84:                                                                                            #If the properties of this item are those of a package
-        return 5
-    elif package_calc >= 84 and package_calc <= 130:                                                                    #If the properties of this item are those of a large package
-        return 6
-    else:
-        return False
-    
 
-def cost_calc(length, width, height, your_loc, their_loc):
+def sorted_array(name):
     '''
+    Puts the ltter in your name in alphabetical order by using ascii keys 
+
+    args:
+    name(str)
+
+    returns:
+    name in alphabetical order(str)
+    
+    '''
+    sorted_array_list = []
+    ascii_list = []
+    lower_letter = lower(name)
+    for i in lower_letter:
+        let_to_num = ord(i)
+        ascii_list.append(let_to_num)
+    ascii_list.sort()
+    for numbers in ascii_list:
+        letters = chr(numbers)
+        sorted_array_list.append(letters)
+    return("".join(sorted_array_list))
+        
+        
+        
+
+def initials(name):
+    ''' 
+    Takes the first letter of every word and puts a period between it
+
     Args:
-        length(Float)
-        width(Float)
-        height(Float)
-        your_loc(int)
-        their_loc(int)
+    name(str)
+
     Returns:
-        Price(float)
-    Summary:
-        Uses the package calaculation to decide how much money it costs to mail the package and the price it akes to travel the amount of zones calculated in getzip
+    Initals with period between them(str)
+    
     '''
-    #The difference in zipcodes is the absolute value of the two zip codes subtracted
-    zip_dif = abs(getzip(your_loc)-getzip(their_loc))
-    #If the item is a regular post card
-    if getsize(length, width, height) == 1:
-        zone_price = .03
-        card_price = .20
-    #If the item is a large post card
-    elif getsize(length, width, height) == 2:
-        zone_price = .03
-        card_price = .37
-    #If the item is an envelope
-    elif getsize(length, width, height) == 3:
-        zone_price = .04
-        card_price = .37
-    #If the item is a large envelope
-    elif getsize(length, width, height) == 4:
-        zone_price = .05
-        card_price = .60
-    #If the item is a package
-    elif getsize(length, width, height) == 5:
-        zone_price = .25
-        card_price = 2.95
-    #If the item is a large package
-    elif getsize(length, width, height) == 6:
-        zone_price = .35
-        card_price = 3.95
-    #Return the price of the card alone plus the price of zones needed to go times the price this items classification has for traveling zones
-    #Is total cost
-    return(card_price + (zone_price*zip_dif))
+    name_list = list(name)
+    initals_list = []
+    counter=0
+    for letter in name_list:
+        if counter == 0:
+            initals_list.append(letter)
+            counter += 1
+        if letter == " ":
+            counter = 0
+    return(".".join(initals_list))
+
+def cipher(name):
+    '''
+    Makes each letter in the name jump 3 spots to ciper the name
+
+    Args:
+    name(str)
+
+    Returns:
+    ciphered name(str)
+    
+    '''
+    lower_name = lower(name)
+    new_name_list = []
+    for letter in lower_name:
+        num_letter = ord(letter)
+        if num_letter == 120:
+            num_letter = 97
+        elif num_letter == 121:
+            num_letter = 98
+        elif num_letter == 122:
+            num_letter = 99
+        else:
+            num_letter += 3
+        letter_num = chr(num_letter)
+        new_name_list.append(letter_num)
+    return "".join(new_name_list)
+
+        
+        
+        
+ 
+
+
+
+
+
+
+        
+            
+        
+
+        
 
 def main():
-    counter = 0
-    #So all types of items can be tested
-    while counter < 6:
-        #Price per zone on this type of package
-        zone_price = 0
-        #Price of type of item
-        card_price = 0
-        print('Hello! welcome to my Post Office')
-        
-        #Try to do this code
-        try:
-            all_values = input('''Type in this order with commas and spaces in between each of these properties::
-            Length of your item
-            Height of your item
-            Width of your item
-            Your zip code
-            Zip code of the place your going
-''')
-            #Split values when a , is placed
-            #Split into the different characteristics
-            values_split = all_values.split(',')
+    while True:
+        #Asks for the name, will be put through all functions
+        users_name = input("What's your name? " )
+    
             
-            length = float(values_split[0])
-            height = float(values_split[1])
-            width = float(values_split[2])
-            your_loc = int(values_split[3])
-            their_loc = int(values_split[4])
-        #If the return of this is a value error
-        except ValueError:
-            print('Invalid inputs')
-            continue
-
-        #if the functions decided this item in not mailable or there was a miss input
-        if getsize(length, width, height) == False or getzip(your_loc) == False or getzip(their_loc) == False:
-            print('Invalid item or location')
+        #Where user sees all possible options for what to do with name input
+        menu = input( 
+    """
+                                    MENU
+    1. Detect how many vowels are in the name
+    2. Which part of the name is the first name
+    3. Which part of the name is the last name
+    4. Reverse name
+    5. Detect how many constantans are in the name
+    6. Detect if there is a hyphen in the name
+    7. Make all characters in name lower
+    8. Which part of the name is the middle name
+    9. Make all characters in name capitalized
+    10. Test if it is a palindrome
+    11. Shuffle name
+    12. Check if there's a special title
+    13. Print initials
+    14. Place letters in alphabetic order
+    15. Turn your name into a cipher.
+    16. Quit
+    """       
+        )
+        if menu == "1":
+            vowel_count(users_name)
+        elif menu =="2":
+            #If there is not a special title
+            if titles(users_name) == False:
+                print(first_name(users_name))
+            else:
+                #Remove the title and run the function
+                without_title = users_name.replace(first_name(users_name), "")
+                without_title_and_space = without_title.replace(" ", "", 1)
+                print(first_name(without_title_and_space))
+        elif menu == "3":
+            print(last_name(users_name))
+        elif menu == "4":
+            print(reverse(users_name))
+        elif menu == "5":
+            constanant_count(users_name)
+        elif menu == "6":
+            if hyphen_check(users_name) == True:
+                print('there is a hyphen in the name')
+            else:
+                print('there is not a hyphen in the name')
+        elif menu == "7":
+            print(lower(users_name))
+        elif menu == "8":
+            if titles(users_name) == False:
+                print(middle_name(users_name))
+            else:
+                without_title = users_name.replace(first_name(users_name), "")
+                without_title_and_space = without_title.replace(" ", "", 1)
+                print(middle_name(without_title_and_space))
+        elif menu == "9":
+            print(upper(users_name))
+        elif menu == "10":
+            #If the name is the same as it is when reversed
+            if users_name == reverse(users_name):
+                print('it is a palindrome')
+            else:
+                print('it is not a palindrome')
+        elif menu == "11":
+            print(shuffle(users_name))
+        elif menu == "12":
+            #If the function has said there is a hyphen
+            if titles(users_name) == True:
+                print('There is a special title')
+            else:
+                print('There is not a special title')
+        elif menu == "13":
+            print(initials(users_name))
+        elif menu == "14":
+            print(sorted_array(users_name))
+        elif menu == "15":
+            print(cipher(users_name))
+        elif menu == "16":
+            break
+        
         else:
-            print (f"{cost_calc(length, width, height, your_loc, their_loc):.2f}".lstrip("0"))
-        counter += 1
+            print('not an option(type number(1, 2, etc)')
 
 main()
 
-    
