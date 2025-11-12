@@ -8,7 +8,7 @@
     //Author: Charlie Gordon
     //Sources: Mr. Campbell
     //Summary: Asks for inputs about a package and returns cost based on its classifcation adn the distance the package needs to travel
-    //Bugs: Doesn't go to second decimal if there is a non-decimal number and will round up
+    //Bugs: 
     //Log: 1.0
 
 
@@ -166,7 +166,7 @@
       //gets costcalc price
       number = costcalc(num1,num3,num2,num4,num5)
       //makes sure it takes goes to the second digit
-      let formattedNumber = number.toPrecision(2);
+      let formattedNumber = number.toFixed(2);
       //removes any potential leading zeros 
       leading0gone = formattedNumber.replace(/^0+/, ''); 
       //return the cost with the best formatted version of the cost
@@ -188,11 +188,11 @@
 
   <!-- Input fields -->
    <div style="text-align: center;">
-    <input  style="text-align: center;font-family: Verdana, Geneva, Tahoma, sans-serif;" type="number" id="length" placeholder="Length"><br><br>
-    <input  style="text-align: center;font-family: Verdana, Geneva, Tahoma, sans-serif;" type="number" id="height" placeholder="Height"><br><br>
-    <input  style="text-align: center;font-family: Verdana, Geneva, Tahoma, sans-serif;" type="number" id="width" placeholder="Width"><br><br>
-    <input  style="text-align: center;font-family: Verdana, Geneva, Tahoma, sans-serif;" type="number" id="your_loc" placeholder="Your Zip Code"><br><br>
-    <input  style="text-align: center;font-family: Verdana, Geneva, Tahoma, sans-serif;" type="number" id="their_loc" placeholder="Their Zip Code"><br><br>
+    <input  style="text-align: center;" type="number" id="length" placeholder="Length"><br><br>
+    <input  style="text-align: center;" type="number" id="height" placeholder="Height"><br><br>
+    <input  style="text-align: center;" type="number" id="width" placeholder="Width"><br><br>
+    <input  style="text-align: center;" type="number" id="your_loc" placeholder="Your Zip Code"><br><br>
+    <input  style="text-align: center;" type="number" id="their_loc" placeholder="Their Zip Code"><br><br>
     <button onclick="main()">Calculate</button>
      <!-- Area to display the result -->
     <p id="result"></p><br>
