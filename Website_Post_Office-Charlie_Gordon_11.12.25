@@ -9,6 +9,7 @@
     //Sources: Mr. Campbell
     //Summary: Asks for inputs about a package and returns cost based on its classifcation adn the distance the package needs to travel
     //Bugs: Doesn't go to second decimal if there is a non-decimal number and will round up
+    //Log: 1.0
 
 
 
