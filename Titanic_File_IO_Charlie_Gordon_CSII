@@ -1,0 +1,263 @@
+def LDD(file):
+    file.seek(1)
+    counter = 0
+    
+    for line in file:
+        if counter > 10:
+                break
+        else:
+            with open('first_ten_rows.csv', 'a') as tenfile:
+                 tenfile.write(line)
+            counter = counter + 1
+        
+
+
+def calc_surv(file):
+    file.seek(1)
+    counter = 0
+    survival_counter = 0
+    
+    
+    
+    for line in file:
+        counter = counter + 1
+        row = line.strip().split(',')
+        if row[1] == '1':
+                survival_counter = survival_counter + 1
+    num_of_ppl = counter - 1
+    survival_rate = survival_counter/num_of_ppl
+    columns = f'''percentage of people who survived,   percentage of people who died,
+{(survival_rate*100):.2f}%,   {((1-survival_rate)*100):.2f}%'''
+    
+    
+    
+    
+    with open('surv_calc.csv', 'w') as surv_calc_file:
+        surv_calc_file.write(columns)
+            
+
+    
+            
+                
+                
+        
+            
+        
+
+
+def gender(file):
+    file.seek(1)
+    men = 0
+    women = 0
+    men_survived = 0
+    women_survived = 0
+
+    for line in file:
+                row = line.strip().split(',')
+                sex = row[5]
+                if sex == 'male':
+                        men = men + 1
+                        if row[1] == '1':
+                            men_survived = men_survived + 1
+
+                elif sex == 'female':
+                        women = women + 1
+                        if row[1] == '1':
+                            women_survived = women_survived + 1
+                
+    columns = f'''percentage of women who survived,   percentage of men who survived,
+    {((women_survived/women)*100):.2f}%,   {((men_survived/men)*100):.2f}%'''
+
+    with open('gender.csv', 'w') as gender_file:
+         gender_file.write(columns)
+
+def age_analysis(file):
+     file.seek(1)
+     counter = 0
+     total_age = 0
+     for line in file:
+        counter = counter + 1
+        row = line.strip().split(',')
+        try:
+             age = int(row[6])
+             counter = counter + 1
+             total_age = total_age + age
+        except ValueError:
+             pass
+        
+     average_age = total_age/counter
+
+     biggest_age = 0
+     file.seek(1)
+     for line in file:
+          try:
+               row = line.strip().split(',')
+               age = int(row[6])
+               if age > biggest_age:
+                    biggest_age = age
+          except ValueError:
+               pass
+     smallest_age = 0
+     file.seek(1)
+     for line in file:
+          try:
+               row = line.strip().split(',')
+               age = int(row[6])
+               if smallest_age == 0:
+                    smallest_age = age
+               else:
+                    if age < smallest_age:
+                         smallest_age = age
+          except ValueError:
+               pass
+    
+     
+     survivors = 0
+     survivor_total_age = 0
+     non_survivors = 0
+     non_survivor_total_age = 0
+     file.seek(1)
+     for line in file:
+          try:
+          
+               row = line.strip().split(',')
+               survived = row[1]
+               age = int(row[6])
+               if survived == ('1'):
+                    survivors = survivors + 1
+                    survivor_total_age = survivor_total_age + age
+               elif survived == ('0'):
+                    non_survivors = non_survivors + 1
+                    non_survivor_total_age = non_survivor_total_age + age
+          except ValueError:
+               pass
+     average_survivor_age = survivor_total_age/survivors
+     average_non_survivor_age = non_survivor_total_age/non_survivors
+          
+
+
+     columns = f'''Average Age of Passangers, Average Age of Survivors, Average Age of Non-Survivors, Youngest Passanger, Oldest Passanger,
+     {average_age:.2f}, {average_non_survivor_age:.2f}, {average_non_survivor_age:.2f}, {smallest_age}, {biggest_age}
+     '''
+
+     with open('age_analysis.csv', 'w') as age_file:
+          age_file.write(columns)
+def classanalysis(file):
+     file.seek(1)
+     first_class = 0
+     second_class = 0
+     third_class = 0
+     first_class_survived = 0
+     second_class_survived = 0
+     third_class_survived = 0
+     first_class_fare = 0
+     second_class_fare = 0
+     third_class_fare = 0
+
+     for line in file:
+                row = line.strip().split(',')
+                pbclass = row[2]
+                if pbclass == '1':
+                        first_class = first_class + 1
+                        try:
+                             fare = float(row[10])
+                             first_class_fare = first_class_fare + fare
+                        except ValueError:
+                             pass
+                        if row[1] == '1':
+                            first_class_survived = first_class_survived + 1
+
+                elif pbclass == '2':
+                        second_class = second_class + 1
+                        try:
+                             fare = float(row[10])
+                             second_class_fare = second_class_fare + fare
+                        except ValueError:
+                             pass
+                        if row[1] == '1':
+                            second_class_survived = second_class_survived + 1
+                elif pbclass == '3':
+                        third_class = third_class + 1
+                        try:
+                             fare = float(row[10])
+                             third_class_fare = third_class_fare + fare
+                        except ValueError:
+                             pass
+                        if row[1] == '1':
+                            third_class_survived = third_class_survived + 1
+     
+     afcsr = first_class_survived/first_class
+     ascsr = second_class_survived/second_class
+     atcsr = third_class_survived/third_class
+
+
+     afcf = first_class_fare/first_class
+     ascf = second_class_fare/second_class
+     atcf = third_class_fare/third_class
+
+     columns = f'''Survival Rate of First Class, Survival Rate of Second Class, Survival Rate of Third Class, Average Fare of First Class, Average Fare of Second Class, Average Fare of Third Class,
+     {(afcsr*100):.2f}, {(ascsr*100):.2f}, {(atcsr*100):.2f}, {afcf:.2f}, {ascf:.2f}, {atcf:.2f}
+     '''
+
+     with open('Class_Analysis.csv', 'w') as Class_file:
+          Class_file.write(columns)
+
+def famanalysis(file):
+     file.seek(1)
+     non_family = 0
+     non_family_survived = 0
+     family_ppl = 0
+     family_ppl_survived = 0
+
+     for line in file:
+               row = line.strip().split(',')
+               family_size = int(row[7]) + int(row[8])
+               print (family_size)
+               
+
+
+
+
+        
+        
+    
+        
+
+
+def main():
+    try:
+        with open('titanic.csv', 'r') as file:
+            #header = file.readline().strip().split(',')  # Read the header row
+            #name_index = header.index('Name')  # Find the index of 'Name' column
+        
+            options = input('''
+1. Load and Display Data
+2. Calculate the Survival Rate
+3. Calculate the Survival Rate of Men and Women
+4. Calculate statistics based on the ages of the passengers
+5. Calculate statistics based on the class of the passengers
+6. Calculate the Survival Rate of Families vs. Solo Passangers
+
+
+
+''')
+            if options == "1":
+                 LDD(file)
+            elif options == "2":
+                 calc_surv(file)
+            elif options == "3":
+                 gender(file)
+            elif options == "4":
+                 age_analysis(file)
+            elif options == "5":
+                 classanalysis(file)
+            elif options == "6":
+                 famanalysis(file)
+            
+                 
+    except FileNotFoundError:
+        print("Error: 'titanic.csv' file not found.")
+
+
+
+main()
