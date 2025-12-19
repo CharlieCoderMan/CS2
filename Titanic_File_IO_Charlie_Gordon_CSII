@@ -2,7 +2,7 @@
 Name: Charlie Gordon
 Description: Takes statisics based of an excel file tlaking about the titanic
 Date: 12/19/25
-Bugs: The Comprehensive Report says that the most likley person to survive is a Child in Third Class and a Girl while it should be First Clast and the other two are correct
+Bugs: N/A
 Sources: W3 Schools
 Log: 1.0
 
@@ -111,11 +111,10 @@ def age_analysis(file):
      counter = 0
      total_age = 0
      for line in file:
-        counter = counter + 1
         row = line.strip().split(',')
         try:
-             age = int(row[6])
              counter = counter + 1
+             age = int(row[6])
              total_age = total_age + age
         except ValueError:
              pass
@@ -172,7 +171,7 @@ def age_analysis(file):
 
 
      columns = f'''Average Age of Passangers, Average Age of Survivors, Average Age of Non-Survivors, Youngest Passanger, Oldest Passanger,
-     {average_age:.2f}, {average_non_survivor_age:.2f}, {average_non_survivor_age:.2f}, {smallest_age}, {biggest_age}
+     {average_age:.2f}, {average_survivor_age:.2f}, {average_non_survivor_age:.2f}, {smallest_age}, {biggest_age}
      '''
 
      with open('age_analysis.csv', 'w') as age_file:
@@ -373,6 +372,7 @@ def comprehensive_report(file):
     Returns: Comprehensive_Report.csv (csv)
     
     '''
+     file.seek(1)
      total_p = 0
      survivors = 0
      for line in file:
@@ -492,41 +492,41 @@ def comprehensive_report(file):
      senior_surv_rate = (senior_surv/senior)*100
 
      
-     c_fc_m = child_surv_rate + first_class_survived + men_survival_rate
+     c_fc_m = child_surv_rate + afcsr + men_survival_rate
      c_fc_m_text = "Child, First Class, Male"
-     c_fc_f = child_surv_rate + second_class_survived + women_survival_rate
+     c_fc_f = child_surv_rate + afcsr + women_survival_rate
      c_fc_f_text = "Child, First Class, Female"
-     c_sc_m = child_surv_rate + second_class_survived + men_survival_rate
+     c_sc_m = child_surv_rate + ascsr + men_survival_rate
      c_sc_m_text = "Child, Second Class, Male"
-     c_sc_f = child_surv_rate + second_class_survived + women_survival_rate
+     c_sc_f = child_surv_rate + ascsr + women_survival_rate
      c_sc_f_text = "Child, Second Class, Male"
-     c_tc_m = child_surv_rate + third_class_survived + men_survival_rate
+     c_tc_m = child_surv_rate + atcsr + men_survival_rate
      c_tc_m_text = "Child, Third Class, Male"
-     c_tc_f = child_surv_rate + third_class_survived + women_survival_rate
+     c_tc_f = child_surv_rate + atcsr + women_survival_rate
      c_tc_f_text = "Child, Third Class, Female"
-     a_fc_m = adult_surv_rate + first_class_survived + men_survival_rate
+     a_fc_m = adult_surv_rate + afcsr + men_survival_rate
      a_fc_m_text = "Adult, First Class, Male"
-     a_fc_f = adult_surv_rate + second_class_survived + women_survival_rate
+     a_fc_f = adult_surv_rate + afcsr + women_survival_rate
      a_fc_f_text = "Adult, First Class, Female"
-     a_sc_m = adult_surv_rate + second_class_survived + men_survival_rate
+     a_sc_m = adult_surv_rate + ascsr + men_survival_rate
      a_sc_m_text = "Adult, Second Class, Male"
-     a_sc_f = adult_surv_rate + second_class_survived + women_survival_rate
+     a_sc_f = adult_surv_rate + ascsr + women_survival_rate
      a_sc_f_text = "Adult, Second Class, Female"
-     a_tc_m = adult_surv_rate + third_class_survived + men_survival_rate
+     a_tc_m = adult_surv_rate + atcsr + men_survival_rate
      a_tc_m_text = "Adult, Third Class, Male"
-     a_tc_f = adult_surv_rate + third_class_survived + women_survival_rate
+     a_tc_f = adult_surv_rate + atcsr + women_survival_rate
      a_tc_f_text = "Adult, Third Class, Female"
-     s_fc_m = child_surv_rate + first_class_survived + men_survival_rate
+     s_fc_m = child_surv_rate + afcsr + men_survival_rate
      s_fc_m_text = "Senior, First Class, Male"
-     s_fc_f = senior_surv_rate + second_class_survived + women_survival_rate
+     s_fc_f = senior_surv_rate + afcsr + women_survival_rate
      s_fc_f_text = "Senior, First Class, Female"
-     s_sc_m = senior_surv_rate + second_class_survived + men_survival_rate
+     s_sc_m = senior_surv_rate + ascsr + men_survival_rate
      s_sc_m_text = "Senior, Second Class, Male"
-     s_sc_f = senior_surv_rate + second_class_survived + women_survival_rate
+     s_sc_f = senior_surv_rate + ascsr + women_survival_rate
      s_sc_f_text = "Senior, Second Class, Female"
-     s_tc_m = senior_surv_rate + third_class_survived + men_survival_rate
+     s_tc_m = senior_surv_rate + atcsr + men_survival_rate
      s_tc_m_text = "Senior, Third Class, Male"
-     s_tc_f = senior_surv_rate + third_class_survived + women_survival_rate
+     s_tc_f = senior_surv_rate + atcsr + women_survival_rate
      s_tc_f_text = "Senior, Third Class, Female"
 
      highest_surv_rate = max(c_fc_m, c_fc_f, c_sc_m, c_sc_f, c_tc_m, c_tc_f, a_fc_m, a_fc_f, a_sc_m, a_sc_f, a_tc_m, a_tc_f, s_fc_m, s_fc_m, s_sc_m, s_sc_f, s_tc_m, s_tc_f)
@@ -607,39 +607,42 @@ def main():
     try:
         #Makes it so file is read through variable File
         with open('titanic.csv', 'r') as file:
-            #header = file.readline().strip().split(',')  # Read the header row
-            #name_index = header.index('Name')  # Find the index of 'Name' column
-        
-            options = input('''
-1. Load and Display Data
-2. Calculate the Survival Rate
-3. Calculate the Survival Rate of Men and Women
-4. Calculate statistics based on the ages of the passengers
-5. Calculate statistics based on the class of the passengers
-6. Calculate the Survival Rate of Families vs. Solo Passangers
-7. Create Bars and Histograms showing statistics about survivors
-8. Comprehensive Report
+            while True:
+               #header = file.readline().strip().split(',')  # Read the header row
+               #name_index = header.index('Name')  # Find the index of 'Name' column
+          
+               options = input('''
+     1. Load and Display Data
+     2. Calculate the Survival Rate
+     3. Calculate the Survival Rate of Men and Women
+     4. Calculate statistics based on the ages of the passengers
+     5. Calculate statistics based on the class of the passengers
+     6. Calculate the Survival Rate of Families vs. Solo Passangers
+     7. Create Bars and Histograms showing statistics about survivors
+     8. Comprehensive Report
 
 
 
-''')
-            if options == "1":
-                 LDD(file)
-            elif options == "2":
-                 calc_surv(file)
-            elif options == "3":
-                 gender(file)
-            elif options == "4":
-                 age_analysis(file)
-            elif options == "5":
-                 classanalysis(file)
-            elif options == "6":
-                 famanalysis(file)
-            elif options == "7":
-                 data_visulation(file)
-            elif options == "8":
-                  comprehensive_report(file)
-            
+     ''')
+               if options == "1":
+                    LDD(file)
+               elif options == "2":
+                    calc_surv(file)
+               elif options == "3":
+                    gender(file)
+               elif options == "4":
+                    age_analysis(file)
+               elif options == "5":
+                    classanalysis(file)
+               elif options == "6":
+                    famanalysis(file)
+               elif options == "7":
+                    data_visulation(file)
+               elif options == "8":
+                    comprehensive_report(file)
+               else:
+                     print('invalid input')
+               
                  
     #If the file cannot be found
     except FileNotFoundError:
